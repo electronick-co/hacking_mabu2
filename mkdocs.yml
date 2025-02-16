@@ -1,5 +1,5 @@
-site_name: hacking Mabu 2
-site_url: https://mydomain.org/mysite
+site_name: Hacking Mabu 2
+site_url: https://electronick-co.github.io/hacking_mabu2/
 theme:
   name: material
 
@@ -19,8 +19,8 @@ theme:
 
 # Page tree
 nav:
-  - Home: index.md
-  - About HakingMabu2:
+  - Home: 
+    - index.md
     - about.md
   - Quick start guide: 
     - quickstart_guide.md
