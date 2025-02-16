@@ -1,0 +1,31 @@
+site_name: hacking Mabu 2
+site_url: https://mydomain.org/mysite
+theme:
+  name: material
+
+  features:
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow    
+  
+  plugins:
+  - search
+  - blog
+
+# Page tree
+nav:
+  - Home: index.md
+  - About HakingMabu2:
+    - about.md
+  - Quick start guide: 
+    - quickstart_guide.md
+  - Hacking process:
+    - subsystems/animatronics.md
+    - subsystems/tablet.md
+  - Blog: 
+    - blog/index.md
