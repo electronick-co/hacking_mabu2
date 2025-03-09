@@ -17,6 +17,13 @@ theme:
   - search
   - blog
 
+markdown_extensions:
+  - tables
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
 # Page tree
 nav:
   - Home: 
@@ -24,8 +31,11 @@ nav:
     - about.md
   - Quick start guide: 
     - quickstart_guide.md
-  - Hacking process:
-    - subsystems/animatronics.md
+  - Documentation:
+    - Animatronics Board:
+      - subsystems/animatronics.md
+      - subsystems/protocol_intro.md
+      - subsystems/protocol_complete.md
     - subsystems/tablet.md
   - Blog: 
     - blog/index.md
