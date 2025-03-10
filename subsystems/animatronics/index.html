@@ -1,0 +1,1726 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://electronick-co.github.io/hacking_mabu2/subsystems/animatronics/">
+      
+      
+        <link rel="prev" href="../../quickstart_guide/">
+      
+      
+        <link rel="next" href="../tablet/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+    
+    
+      
+        <title>Motor board protocol - Hacking Mabu 2</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#motor-board-protocol" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Hacking Mabu 2" class="md-header__button md-logo" aria-label="Hacking Mabu 2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Hacking Mabu 2
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Motor board protocol
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quickstart_guide/" class="md-tabs__link">
+          
+  
+  Quick start guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  Documentation
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../blog/" class="md-tabs__link">
+          
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Hacking Mabu 2" class="md-nav__button md-logo" aria-label="Hacking Mabu 2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Hacking Mabu 2
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Home
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to Hacking Mabu 2! 🤖✨
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Quick start guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Quick start guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart_guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstart guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Animatronics Board
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Animatronics Board
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Motor board protocol
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Motor board protocol
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#serial-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Serial Parameters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command list
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#power-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power On
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#power-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power Off
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version ID
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calibration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-calibration-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get calibration values
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-motor-positions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get motor positions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#read-pid-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Read PID values
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset-pid-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reset PID values
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-movement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part movement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current position
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slow-blink" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slow blink
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#single-cycle-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Single cycle test
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#double-cycle-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Double cycle test
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cycle-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 Cycle test
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tablet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tablet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#serial-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Serial Parameters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command list
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#power-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power On
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#power-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power Off
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version ID
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calibration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-calibration-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get calibration values
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-motor-positions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get motor positions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#read-pid-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Read PID values
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset-pid-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reset PID values
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-movement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part movement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current position
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slow-blink" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slow blink
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#single-cycle-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Single cycle test
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#double-cycle-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Double cycle test
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cycle-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 Cycle test
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="motor-board-protocol">Motor board protocol</h1>
+<h2 id="serial-parameters">Serial Parameters</h2>
+<ul>
+<li><strong>Baudrate</strong>: 57600</li>
+</ul>
+<h2 id="command-list">Command list</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command</th>
+<th style="text-align: center;"># bytes</th>
+<th style="text-align: center;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><a href="#power-on">ON</a></td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">Turn on motor BOARD</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#power-off">OFF</a></td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">Turn off motor board</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#version-id">VERSION ID</a></td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">Get the version ID of the board</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#calibration">CALIBRATION</a></td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">Run calibration command</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#get-calibration-values">GET CALIBRATION VALUES</a></td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">Get calibration values</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#get-motor-positions">GET MOTOR POSITIONS</a></td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">Get motor positions</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#read-pid-values">READ PID</a></td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">Read stored PID values</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#reset-pid-values">RESET PID</a></td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">Reset PID values</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#part-movement">PART MOVEMENT</a></td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">Move specific motor to desired position</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#current-position">CURRENT POSITION</a></td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">Curent position message</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#slow-blink">SLOW BLINK</a></td>
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">Do a slow blink routine</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#single-cycle-test">SINGLE CCYLE TEST</a></td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">Run cycle testing routine</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#double-cycle-test">DOUBLE CYCLE TEST</a></td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">Run cycle testing routine twice</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#5-cycle-test">5 CYCLE TEST</a></td>
+<td style="text-align: center;">28</td>
+<td style="text-align: center;">Run cycle testing routine 5 times</td>
+</tr>
+</tbody>
+</table>
+<h2 id="power-on"><strong>Power On</strong></h2>
+<p>Power the motors ON. Without this command any move command will work.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>02 4f 7f</code></td>
+<td style="text-align: center;"><code>0b cb</code></td>
+<td style="text-align: center;">The command is always the same</td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>02 4f 7f</code></td>
+<td style="text-align: center;"><code>0b cb</code></td>
+<td style="text-align: center;">The answer is always the same</td>
+</tr>
+</tbody>
+</table>
+<h2 id="power-off"><strong>Power Off</strong></h2>
+<p>Power the motors OFF.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>02 4f</code></td>
+<td style="text-align: center;"><code>8b 4c</code></td>
+<td style="text-align: center;">The command is always the same</td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>02 4f 00</code></td>
+<td style="text-align: center;"><code>8b 4c</code></td>
+<td style="text-align: center;">The answer is always the same</td>
+</tr>
+</tbody>
+</table>
+<h2 id="version-id"><strong>Version ID</strong></h2>
+<p>Returns the version ID of the board.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>01 56</code></td>
+<td style="text-align: center;"><code>44 52</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>05 56 F3 F2 F1 F0</code></td>
+<td style="text-align: center;"><code>C1 C2</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>C1</code> and <code>C2</code> are the CRC value calculated.</p>
+<p><code>F3 F2 F1 F0</code> is the floating point number for the version (IEEE-754 Floating Point)</p>
+<p><strong>Response example:</strong> <code>fa 00 05 56 40 18 f5 c3 9e 68</code>. The version number is <code>40 18 f5 c3</code> which represent version 2.39</p>
+<h2 id="calibration"><strong>Calibration</strong></h2>
+<p>This command makes the selected part to move in the whole range.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>02 43 ID</code></td>
+<td style="text-align: center;"><code>C1 C2</code></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>02 43 00</code></td>
+<td style="text-align: center;"><code>73 40</code></td>
+<td style="text-align: center;">The answer is always the same for all parts</td>
+</tr>
+</tbody>
+</table>
+<p><code>C1</code> and <code>C2</code> are the CRC value calculated.</p>
+<p><code>ID</code> is the id of the motor part:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ID</th>
+<th style="text-align: center;">Part</th>
+<th style="text-align: center;">Descripton</th>
+<th style="text-align: center;">Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>01</code></td>
+<td style="text-align: center;">NT</td>
+<td style="text-align: center;">Head tilt</td>
+<td style="text-align: center;"><code>fa 00 02 43 01 74 41</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>02</code></td>
+<td style="text-align: center;">NR</td>
+<td style="text-align: center;">Head rotation</td>
+<td style="text-align: center;"><code>fa 00 02 43 02 75 42</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>04</code></td>
+<td style="text-align: center;">NE</td>
+<td style="text-align: center;">Head Vertical movement</td>
+<td style="text-align: center;"><code>fa 00 02 43 04 77 44</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>08</code></td>
+<td style="text-align: center;">EUD</td>
+<td style="text-align: center;">Eye Vertical movement</td>
+<td style="text-align: center;"><code>fa 00 02 43 08 7b 48</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>10</code></td>
+<td style="text-align: center;">ELR</td>
+<td style="text-align: center;">Eye Horizontal movement</td>
+<td style="text-align: center;"><code>fa 00 02 43 10 83 50</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>20</code></td>
+<td style="text-align: center;">LDR</td>
+<td style="text-align: center;">Right eyelid</td>
+<td style="text-align: center;"><code>fa 00 02 43 20 93 60</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>40</code></td>
+<td style="text-align: center;">LDL</td>
+<td style="text-align: center;">Left eyelid</td>
+<td style="text-align: center;"><code>fa 00 02 43 40 b3 80</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="get-calibration-values"><strong>Get calibration values</strong></h2>
+<p>Returns the calibration values. </p>
+<p>ToDo -&gt; Yet to be decoded</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>01 42</code></td>
+<td style="text-align: center;"><code>30 3e</code></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>2b 42 3e 05 9b 0c 5d 07 16 05 88 0c 72 07 00 08 e4 08 e4 00 5f 03 de 04 7f 01 57 0a 1e 0d c7 02 d5 00 b9 0f e4 0e 6a 0a 2c 0d c2 02 fa da 41 80 00 00 3f 80 00 00 3a a3 d7 0a 3c 03 12 6f 3e 99 99 9a 3a 83 12 6f 3d a3 d7 0a 3f 00 00 00 3a 83 12 6f 3d a3 d7 0a</code></td>
+<td style="text-align: center;"><code>ce 9b</code></td>
+<td style="text-align: center;">Need to be decoded</td>
+</tr>
+</tbody>
+</table>
+<h2 id="get-motor-positions"><strong>Get motor positions</strong></h2>
+<p>Return the position of the motors.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>01 40</code></td>
+<td style="text-align: center;"><code>2e 3c</code></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><a href="#current-position">See this section</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="read-pid-values"><strong>Read PID values</strong></h2>
+<p>Returns PID values</p>
+<p>ToDo -&gt; Yet to be decoded</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>01 47</code></td>
+<td style="text-align: center;"><code>35 43</code></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>55 47 3f 4c cc cd 37 51 b7 17 41 00 00 00 3f 4c cc cd 37 51 b7 17 41 00 00 00 40 06 66 66 3b 16 bb 99 41 80 00 00 40 06 66 66 3b 16 bb 99 41 80 00 00 3f 80 00 00 3a a3 d7 0a 3c 03 12 6f 3e 99 99 9a 3a 83 12 6f 3d a3 d7 0a 3f 00 00 00 3a 83 12 6f 3d a3 d7 0a</code></td>
+<td style="text-align: center;"><code>ce 9b</code></td>
+<td style="text-align: center;">Need to be decoded</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reset-pid-values"><strong>Reset PID values</strong></h2>
+<p>TBD</p>
+<h2 id="part-movement"><strong>Part movement</strong></h2>
+<p>Command to move certain motor into a specified position</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>04 01 ID 01 MV</code></td>
+<td style="text-align: center;"><code>C1 C2</code></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><a href="#current-position">See this section</a></td>
+</tr>
+</tbody>
+</table>
+<p><code>C1</code> and <code>C2</code> are the CRC value calculated.</p>
+<p><code>MV</code> is the value of the movement, form 0x00 to 0xff</p>
+<p><code>ID</code> is the id of the motor part:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ID</th>
+<th style="text-align: center;">Part</th>
+<th style="text-align: center;">Descripton</th>
+<th style="text-align: center;">Command example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>01</code></td>
+<td style="text-align: center;">NT</td>
+<td style="text-align: center;">Head tilt</td>
+<td style="text-align: center;"><code>fa 00 04 01 01 01 ff f9 02</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>02</code></td>
+<td style="text-align: center;">NR</td>
+<td style="text-align: center;">Head rotation</td>
+<td style="text-align: center;"><code>fa 00 04 01 02 01 ff fc 03</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>04</code></td>
+<td style="text-align: center;">NE</td>
+<td style="text-align: center;">Head Vertical movement</td>
+<td style="text-align: center;"><code>fa 00 04 01 04 01 ff 03 05</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>08</code></td>
+<td style="text-align: center;">EUD</td>
+<td style="text-align: center;">Eye Vertical movement</td>
+<td style="text-align: center;"><code>fa 00 04 01 08 01 ff 0f 09</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>10</code></td>
+<td style="text-align: center;">ELR</td>
+<td style="text-align: center;">Eye Horizontal movement</td>
+<td style="text-align: center;"><code>fa 00 04 01 10 01 ff 27 11</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>20</code></td>
+<td style="text-align: center;">LDR</td>
+<td style="text-align: center;">Right eyelid</td>
+<td style="text-align: center;"><code>fa 00 04 01 20 01 ff 57 21</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>40</code></td>
+<td style="text-align: center;">LDL</td>
+<td style="text-align: center;">Left eyelid</td>
+<td style="text-align: center;"><code>fa 00 04 01 40 01 ff b7 41</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="current-position"><strong>Current position</strong></h2>
+<p>This is a response from the <a href="#part-movement">movement command</a> and the.</p>
+<p>When the part movement command is sent, this response will repeat until achieving a stable status.
+When the response id from the status command, it will only span once.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>09 01 00 P7 P6 P5 P4 P3 P2 P1</code></td>
+<td style="text-align: center;"><code>C1 C2</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>C1</code> and <code>C2</code> are the CRC value calculated.</p>
+<p><code>P#</code> is the position of such motor, from 0x00 to 0x0ff:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Part</th>
+<th style="text-align: center;">Part</th>
+<th style="text-align: center;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>P1</code></td>
+<td style="text-align: center;">NT</td>
+<td style="text-align: center;">Head tilt</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>P2</code></td>
+<td style="text-align: center;">NR</td>
+<td style="text-align: center;">Head rotation</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>P3</code></td>
+<td style="text-align: center;">NE</td>
+<td style="text-align: center;">Head Vertical movement</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>P4</code></td>
+<td style="text-align: center;">EUD</td>
+<td style="text-align: center;">Eye Vertical movement</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>P5</code></td>
+<td style="text-align: center;">ELR</td>
+<td style="text-align: center;">Eye Horizontal movement</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>P6</code></td>
+<td style="text-align: center;">LDR</td>
+<td style="text-align: center;">Right eyelid</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>P7</code></td>
+<td style="text-align: center;">LDL</td>
+<td style="text-align: center;">Left eyelid</td>
+</tr>
+</tbody>
+</table>
+<p>Command example:  <code>fa 00 09 01 00 6e 78 7b 77 68 64 76 be 22</code></p>
+<h2 id="slow-blink"><strong>Slow blink</strong></h2>
+<p>Do a slow blink. Decoding this will help to send a set of movements at the same time</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>0f 01 60 84 16 16 14 fc fc 3c 0b 0b 3c 16 16 0a</code></td>
+<td style="text-align: center;"><code>bf ee</code></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><a href="#current-position">See this section</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="single-cycle-test"><strong>Single cycle test</strong></h2>
+<p>Send a command that moves eyes up and down</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>07 01 08 04 e5 7f 19 7f</code></td>
+<td style="text-align: center;"><code>19 0d</code></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><a href="#current-position">See this section</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="double-cycle-test"><strong>Double cycle test</strong></h2>
+<p>Send the cycle test twice</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>0b 01 08 08 e5 7f 19 7f e5 7f 19 7f</code></td>
+<td style="text-align: center;"><code>69 13</code></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><a href="#current-position">See this section</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-cycle-test"><strong>5 Cycle test</strong></h2>
+<p>Run the testing cycle 5 times</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Command direction</th>
+<th style="text-align: center;">Header</th>
+<th style="text-align: center;">Payload</th>
+<th style="text-align: center;">CRC</th>
+<th style="text-align: center;">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">PC <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/27a1.svg" title=":arrow_right:" /> Mabu</td>
+<td style="text-align: center;"><code>fa 00</code></td>
+<td style="text-align: center;"><code>17 01 08 14 e5 7f 19 7f e5 7f 19 7f e5 7f 19 7f e5 7f 19 7f e5 7f 19 7f</code></td>
+<td style="text-align: center;"><code>ab 25</code></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">PC <img alt="⬅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b05.svg" title=":arrow_left:" /> Mabu</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><a href="#current-position">See this section</a></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
