@@ -34,8 +34,6 @@ nav:
   - Documentation:
     - Animatronics Board:
       - subsystems/animatronics.md
-      - subsystems/protocol_intro.md
-      - subsystems/protocol_complete.md
     - subsystems/tablet.md
   - Blog: 
     - blog/index.md
